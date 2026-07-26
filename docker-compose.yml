@@ -1,0 +1,19 @@
+services:
+  node-exporter:
+    image: prom/node-exporter:v1.8.2
+    container_name: node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      # 1. 新增：把宿主机的自定义目录挂载进容器
+      - /home/liang/local-monitor/custom_metrics:/data/custom_metrics:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      # 2. 新增：开启文本文件采集器，并指定刚刚挂载的目录
+      - '--collector.textfile.directory=/data/custom_metrics'
+    ports:
+      - "9100:9100"

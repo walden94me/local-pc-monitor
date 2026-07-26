@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 30s      # 核心要求：全局抓取粒度设为 30 秒
+  evaluation_interval: 30s  # 告警规则评估周期的粒度也设为 30 秒
+
+scrape_configs:
+  - job_name: 'ubuntu-desktop'
+    static_configs:
+      # 在 Docker 网络中，我们可以直接通过服务名 node-exporter 访问
+      - targets: ['node-exporter:9100']
